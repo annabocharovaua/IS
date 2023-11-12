@@ -25,7 +25,8 @@ app.use(cookieParser());
 
 var handlers = require('./queries');
 var signup = require('./signup');
-var routes_hangler = require('./routes')(app);
+var routes_hangler = 
+require('./routes')(app);
 
 app.get('/all', handlers.get_users);
 
@@ -163,7 +164,7 @@ app.get('/getFilmDetails/:filmId', (request, response) => {
     let query_reviews = `SELECT fr.review_id, fr.id_film, fr.id_user, fr.rating, fr.review_date, fr.review_text, u.first_name, u.last_name
     FROM film_reviews fr
     JOIN users1 u ON fr.id_user = u.user_id
-    WHERE fr.id_film = ${filmId} AND fr.review_text IS NOT NULL;`
+    WHERE fr.id_film = ${filmId} AND fr.review_text IS NOT NULL AND TRIM(fr.review_text) != '';`
 
     connection.query(query_reviews, (err, result, field) => {
         if (err) {
@@ -186,7 +187,7 @@ app.get('/getFilmDetails/:filmId', (request, response) => {
             "description": item['description'], "poster": item['poster'], "trailer": item['trailer'], "rating": item['rating']
             , "count_ratings": item['count_ratings'], "film_genres": film_genres, "film_reviews": film_reviews};
         });
-        console.log(queryResult);
+        //console.log(queryResult);
         response.send(queryResult);
     });
 
@@ -207,7 +208,7 @@ app.get('/getRatingFilmsFromDB', (request, response) => {
         result.forEach(function (item, i, arr) {
             queryResult[i] = { "film_id": item['film_id'], "name": item['name'], "rating": item['rating']};
         });
-        console.log(queryResult);
+        //console.log(queryResult);
         response.send(queryResult);
     });
 
@@ -242,9 +243,76 @@ app.get('/getRatingAllFilmsFromDB', (request, response) => {
         result.forEach(function (item, i, arr) {
             queryResult[i] = { "film_id": item['film_id'], "name": item['name'], "rating": item['rating'], "poster": item['poster'], "film_genres": film_genres[item['film_id']] };
         });
-        console.log(queryResult);
+        //console.log(queryResult);
         response.send(queryResult);
     });
 
     CloseConnectionToDB(connection);    
 });
+
+
+app.get('/getUsernameAndId', (request, response) => {
+    let result;
+    console.log("cache.get(username)", cache.get("username"));
+    if (cache.get("username") == null)
+        result = 0;
+    else if (cache.get("username") == '')
+        result = 0;
+    else  
+        result = { "id_username": cache.get("id_username"), "username": cache.get("username")};
+
+    console.log("cache.get(result)", result);
+    response.send(JSON.stringify(result));   
+});
+
+
+app.get('/getFirstAndLastName', (request, response) => {
+    let result = "0";
+    //console.log("cache.get(username)", cache.get("username"));
+    if (cache.get("username") == null) {
+        result = "0";
+        response.send(result);
+    }
+    else if (cache.get("username") == '') {
+        result = "0";
+        response.send(result);
+    }
+    else  {
+        const connection = ConnectToDB(config);  
+        let query = "SELECT user_id, first_name, last_name FROM users1 WHERE user_id = " + cache.get("id_username") + ";";
+        connection.query(query, (err, res, field) => {
+            result = { "user_id": res[0]['user_id'], "first_name": res[0]['first_name'], "last_name": res[0]['last_name']};
+            console.log("res::: ", result);
+            console.log(err);   
+            response.send(result);  
+        });
+        CloseConnectionToDB(connection);   
+    }
+});
+
+app.post('/postReviewToDB', (req, res, next) =>  { 
+    //console.log(req.body);
+    var inserts = {
+        film_id: req.body.film_id,
+        user_id: req.body.user_id,
+        grade: req.body.grade,
+        comment: req.body.comment
+    }; 
+
+    const today = new Date().toISOString().slice(0, 10);
+    //console.log("DATE-today: ", today);
+
+    const connection = ConnectToDB(config);  
+    let query = "INSERT INTO `cinemadb`.`film_reviews` (`id_film`, `id_user`, `rating`, `review_date`, `review_text`) VALUES ('" + inserts.film_id + "', '" + inserts.user_id + "', '" + inserts.grade + "', '" + today + "', '" + inserts.comment + "');"
+    connection.query(query, (err, result, field) => {
+        console.log("ERR", err);
+        if (!err) {
+            console.log(query);
+            res.status(200).send('Your comment has been successfully added!'); 
+        } 
+        else {
+            res.status(409).send('Error while making a comment!'); 
+        } 
+    });		
+    CloseConnectionToDB(connection);
+})

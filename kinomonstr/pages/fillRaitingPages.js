@@ -34,7 +34,7 @@ fetch('/getRatingAllFilmsFromDB', {
             document.getElementById("a-raitingTable-" + filmId).setAttribute("onclick", "showFilmDetails(" + filmId + ")");
             CreateElement("td", "td3-raitingTable-" + filmId, filmsTable[i]['film_genres'], "tr-raitingTable-" + filmId).classList.add("text-center", "vert-align");
             CreateElement("td", "td4-raitingTable-" + filmId, "", "tr-raitingTable-" + filmId).classList.add("text-center", "vert-align");
-            CreateElement("span", "span-raitingTable-" + filmId, filmsTable[i]['rating'], "td4-raitingTable-" + filmId).classList.add("badge");
+            CreateElement("span", "span-raitingTable-" + filmId, filmsTable[i]['rating'].toFixed(1), "td4-raitingTable-" + filmId).classList.add("badge");
 
         }
     });

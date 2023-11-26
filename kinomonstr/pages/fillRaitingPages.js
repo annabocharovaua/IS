@@ -20,8 +20,6 @@ fetch('/getRatingAllFilmsFromDB', {
     .then(res => {
          typeof (res);
          let filmsTable = JSON.parse(res);        
-         console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA")
-         console.log(filmsTable);
          for (let i = 0; i < filmsTable.length; i++) {
             var filmId = filmsTable[i]['film_id'];
             CreateElement("tr", "tr-raitingTable-" + filmId, "", "raitingTable");

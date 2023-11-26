@@ -5,7 +5,7 @@ fetch('/getUsernameAndId', {
     .then(res => {
             
          
-         //console.log("cache.get(username)", cache.get("username"));
+         console.log("res", res);
          if(res == "0") {
              let element = document.createElement("button");
              element.id = "button-entr";

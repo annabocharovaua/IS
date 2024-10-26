@@ -28,8 +28,8 @@ function AddFieldGenre(number) {
         if (genreTable.length == 0) 
             CreateElement("option", "optionSelectGenre" + 0, "На жаль жанри відсутні, додайте новий!", "selectGenre");
         for (let i = 0; i < genreTable.length; i++) {
-            if (!(genreTable[i]['name'] === deletedGenre))
-                CreateElement("option", "optionSelectGenre" + i, genreTable[i]['name'], "genreName"+ + number);
+            if (!(genreTable[i]['name'] == deletedGenre))
+                CreateElement("option", "optionSelectGenre" + i, genreTable[i]['name'], "genreName"+ number);
         }
     });
 }
@@ -296,7 +296,7 @@ function DeleteFilm() {
            if (filmsTable.length == 0) 
                CreateElement("option", "optionSelectFilm" + 0, "На жаль фільми відсутні, додайте новий!", "selectFilm");
            for (let i = 0; i < filmsTable.length; i++) {
-            if (!(filmsTable[i]['name'] === deletedFilm))
+            if (!(filmsTable[i]['name'] == deletedFilm))
                 CreateElement("option", "optionSelectFilm" + i, filmsTable[i]['name'], "selectFilm");
            }
                
@@ -342,7 +342,7 @@ function DeleteFilm() {
 var deletedGenre ='';
 function DeleteGenre() {
     CreateElement("form", "formDeleteGenre", "", "container-for-forms").classList.add("custom-mt-3");
-    CreateElement("label", "labelformDeleteGenre", "Оберіть фільм для видалення:", "formDeleteGenre").classList.add("form-label");
+    CreateElement("label", "labelformDeleteGenre", "Оберіть жанр для видалення:", "formDeleteGenre").classList.add("form-label");
     CreateElement("select", "selectGenre", "", "formDeleteGenre").classList.add("form-select");
 
     fetch(`/getGenresFromDB`, {
@@ -359,7 +359,7 @@ function DeleteGenre() {
            }
                
         });
-        CreateElement("button", "buttonSendDeleteGenre" , "Видалити фільм", "formDeleteGenre").classList.add("custom-mt-3", "btm", "btn-lg","btn-warning", "pull-right");
+        CreateElement("button", "buttonSendDeleteGenre" , "Видалити жанр", "formDeleteGenre").classList.add("custom-mt-3", "btm", "btn-lg","btn-warning", "pull-right");
         document.getElementById("buttonSendDeleteGenre").setAttribute('type', "button");
 
         document.getElementById("buttonSendDeleteGenre").onclick = function () {
@@ -400,7 +400,7 @@ function DeleteGenre() {
 var deletedSession ='';
 function DeleteSession() {
     CreateElement("form", "formDeleteSession", "", "container-for-forms").classList.add("custom-mt-3");
-    CreateElement("label", "labelformDeleteSessione", "Оберіть фільм для видалення:", "formDeleteSession").classList.add("form-label");
+    CreateElement("label", "labelformDeleteSessione", "Оберіть сеанс для видалення:", "formDeleteSession").classList.add("form-label");
     CreateElement("select", "selectSession", "", "formDeleteSession").classList.add("form-select");
 
     fetch(`/getSessionsFromDB`, {
@@ -414,16 +414,16 @@ function DeleteSession() {
             }
             for (let i = 0; i < Object.keys(SessionTable).length; i++) {
                 let session = SessionTable[i]['film_name'] + ' | ' + SessionTable[i]['start_date'] + ' | ' + SessionTable[i]['start_time'] + ' | ' + SessionTable[i]['ticket_price'];
-                if (!(session === deletedSession))
+                if (!(session == deletedSession))
                     CreateElement("option", "optionSelectSession" + i, session, "selectSession");
             }
                
         });
-        CreateElement("button", "buttonSendDeleteSession" , "Видалити сесію", "formDeleteSession").classList.add("custom-mt-3", "btm", "btn-lg","btn-warning", "pull-right");
+        CreateElement("button", "buttonSendDeleteSession" , "Видалити сеанс", "formDeleteSession").classList.add("custom-mt-3", "btm", "btn-lg","btn-warning", "pull-right");
         document.getElementById("buttonSendDeleteSession").setAttribute('type', "button");
 
         document.getElementById("buttonSendDeleteSession").onclick = function () {
-            document.getElementById("question_confirmation").innerText = `Ви впевнені, що хочете видалити сесію:  ${document.getElementById("selectSession").value}?`;
+            document.getElementById("question_confirmation").innerText = `Ви впевнені, що хочете видалити сеанс:  ${document.getElementById("selectSession").value}?`;
             openModal();
         }
         document.getElementById("sure").onclick = function () {
@@ -476,11 +476,11 @@ function ChangedSelection() {
         ResetContainerForForms();
         DeleteFilm();
     }
-    else if (document.getElementById("operation").value === "Додати сесію") {
+    else if (document.getElementById("operation").value === "Додати сеанс") {
         ResetContainerForForms();
         AddNewSession();
     }
-    else if (document.getElementById("operation").value === "Видалити сесію") {
+    else if (document.getElementById("operation").value === "Видалити сеанс") {
         ResetContainerForForms();
         DeleteSession();
     }

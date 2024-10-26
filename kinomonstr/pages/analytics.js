@@ -77,9 +77,9 @@ function FillInFilmsStatisticsTable(startDate = 0, endDate = 0, notOnLoad = 0, i
                     total_profit +=parseFloat(filmsStatisticsTable[i]['average_ticket_price']).toFixed(2) * filmsStatisticsTable[i]['total_tickets_sold'];
                }
                if (document.getElementById("b-total-profit") == undefined)
-                   CreateElement("b", "b-total-profit", "Загальний дохід: " + total_profit + " грн", "total-profit").setAttribute('style', "font-size: 1.5em;");
+                   CreateElement("b", "b-total-profit", "Загальний дохід: " + total_profit.toFixed(2) + " грн", "total-profit").setAttribute('style', "font-size: 1.5em;");
               else
-                document.getElementById("b-total-profit").innerText = "Загальний дохід: " + total_profit + " грн";    
+                document.getElementById("b-total-profit").innerText = "Загальний дохід: " + total_profit.toFixed(2) + " грн";    
           });
    }
    else if (notOnLoad == 0 && isSecondPeriod == 0) { // при изменении даты в первом периоде
@@ -123,7 +123,7 @@ function FillInFilmsStatisticsTable(startDate = 0, endDate = 0, notOnLoad = 0, i
                             var startDate = document.getElementById("start-date").value;
                             var endDate = document.getElementById("end-date").value;
                             if (document.getElementById("b-total-profit"))
-                              document.getElementById("b-total-profit").innerText = "Загальний дохід за період з " + startDate + " до " + endDate + " становить: " + total_profit + " грн";
+                              document.getElementById("b-total-profit").innerText = "Загальний дохід за період з " + startDate + " до " + endDate + " становить: " + total_profit.toFixed(2) + " грн";
                        });
              });
    }
@@ -168,7 +168,7 @@ function FillInFilmsStatisticsTable(startDate = 0, endDate = 0, notOnLoad = 0, i
                          var startDate = document.getElementById("start-date-2").value;
                          var endDate = document.getElementById("end-date-2").value;
                          if (document.getElementById("b-total-profit-2"))
-                           document.getElementById("b-total-profit-2").innerText = "Загальний дохід за період з " + startDate + " до " + endDate + " становить: " + total_profit + " грн";
+                           document.getElementById("b-total-profit-2").innerText = "Загальний дохід за період з " + startDate + " до " + endDate + " становить: " + total_profit.toFixed(2) + " грн";
                     });
           });
      }
@@ -188,9 +188,9 @@ function FillInFilmsStatisticsTable(startDate = 0, endDate = 0, notOnLoad = 0, i
                 total_profit +=parseFloat(filmsStatisticsTable[i]['average_ticket_price']).toFixed(2) * filmsStatisticsTable[i]['total_tickets_sold'];
            }
            if (document.getElementById("b-total-profit") == undefined)
-               CreateElement("b", "b-total-profit", "Загальний дохід: " + total_profit, "total-profit").setAttribute('style', "font-size: 1.5em;");
+               CreateElement("b", "b-total-profit", "Загальний дохід: " + total_profit.toFixed(2), "total-profit").setAttribute('style', "font-size: 1.5em;");
           else
-            document.getElementById("b-total-profit").innerText = "Загальний дохід: " + total_profit;
+            document.getElementById("b-total-profit").innerText = "Загальний дохід: " + total_profit.toFixed(2);
         });
    }
 }

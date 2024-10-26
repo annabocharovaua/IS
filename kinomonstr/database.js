@@ -394,8 +394,8 @@ app.post('/postBuyTicket', (request, response) => {
 });
 
 app.get('/isAdmin', (request, response) => {
-    response.send("1");
-    /*let result = "0";
+    //response.send("1");
+    let result = "0";
     //console.log("cache.get(username)", cache.get("username"));
     if (cache.get("username") == null) {
         result = "0";
@@ -415,7 +415,7 @@ app.get('/isAdmin', (request, response) => {
             response.send(result);  
         });
         CloseConnectionToDB(connection);   
-    }*/
+    }
 });
 
 app.get('/getSumOfAllVisitorsFromDB', async (request, response) => {
